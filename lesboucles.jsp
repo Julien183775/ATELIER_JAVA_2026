@@ -28,7 +28,7 @@
 <h2>Exercice 1 : Le carré d'étoiles</h2>
 <p>Ecrire le code afin de produire un carré d'étoile</p>
 <p>Exemple si l'utilisateur saisie le valeur 5</p>
-<p>
+ <p>
     <%
         for (int ligne = 1; ligne <= cpt; ligne++) {
             for (int etoile = 1; etoile <= cpt; etoile++) {
@@ -45,6 +45,7 @@
 
 </body>
 </html>
+
 <h2>Exercice 2 : Triangle rectangle gauche</h2>
 <p>Ecrire le code afin de produire un triangle rectangle aligné sur la gauche</p>
 <p>Exemple si l'utilisateur saisie le valeur 5</p>
