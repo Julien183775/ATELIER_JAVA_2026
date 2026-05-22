@@ -29,17 +29,19 @@
 <p>Ecrire le code afin de produire un carré d'étoile</p>
 <p>Exemple si l'utilisateur saisie le valeur 5</p>
  <p>
-    <%
-        for (int ligne = 1; ligne <= cpt; ligne++) {
-            for (int etoile = 1; etoile <= cpt; etoile++) {
-                out.print("*");
+        <%
+            for (int ligne = 1; ligne <= cpt; ligne++) {
+                for (int etoile = 1; etoile <= cpt; etoile++) {
+                    out.print("*");
+                }
+                out.print("<br>");
             }
-            out.print("<br>");
-        }
-    %>
-    </p>
+        %>
+        </p>
 
-<% } %>
+<%
+    }
+%>
 
 <p><a href="index.html">Retour au sommaire</a></p>
 
