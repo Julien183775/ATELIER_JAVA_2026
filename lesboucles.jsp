@@ -6,7 +6,7 @@
 <body bgcolor=white>
 <h1>Exercices sur les boucles</h1>
 <form action="#" method="post">
-    <label for="inputValeur">Saisir le nombre d'étoiles : </label>
+    <label for="inputValeur">Saisir le nombre de chats : </label>
     <input type="text" id="inputValeur" name="valeur">
     <input type="submit" value="Afficher">
 </form>
@@ -17,23 +17,23 @@
 <%-- Vérification de l'existence de la valeur --%>
 <% if (valeur != null && !valeur.isEmpty()) { %>
 
-<%-- Boucle for pour afficher une ligne d'étoiles --%>
+<%-- Boucle for pour afficher une ligne de chats --%>
     <%int cpt = Integer.parseInt(valeur); %>
     <p>
     <% for (int i = 1; i <= cpt; i++) { %>
-       <%= "*" %>
+       <%= "🐱" %>
     <% } %>
     </p>
 
-<h2>Exercice 1 : Le carré d'étoiles</h2>
-<p>Ecrire le code afin de produire un carré d'étoile</p>
+<h2>Exercice 1 : Le carré de chats</h2>
+<p>Ecrire le code afin de produire un carré de chats</p>
 <p>Exemple si l'utilisateur saisie le valeur 5</p>
-<h3>Carré d'étoiles</h3>
+<h3>Carré de chats</h3>
 
 <%
 for(int i = 1; i <= cpt; i++) {
     for(int j = 1; j <= cpt; j++) {
-        out.print("*");
+        out.print("🐱");
     }
     out.print("<br>");
 }
@@ -47,7 +47,7 @@ for(int i = 1; i <= cpt; i++) {
 <%
 for(int i = 1; i <= cpt; i++) {
     for(int j = 1; j <= i; j++) {
-        out.print("*");
+        out.print("🐱");
     }
     out.print("<br>");
 }
@@ -61,7 +61,7 @@ for(int i = 1; i <= cpt; i++) {
 <%
 for(int i = cpt; i >= 1; i--) {
     for(int j = 1; j <= i; j++) {
-        out.print("*");
+        out.print("🐱");
     }
     out.print("<br>");
 }
@@ -80,9 +80,9 @@ for(int i = 1; i <= cpt; i++) {
         out.print("&nbsp;&nbsp;");
     }
 
-    // étoiles
+    // chats
     for(int j = 1; j <= i; j++) {
-        out.print("*");
+        out.print("🐱");
     }
 
     out.print("<br>");
@@ -102,9 +102,9 @@ for(int i = 1; i <= cpt; i++) {
         out.print("&nbsp;");
     }
 
-    // étoiles
+    // chats
     for(int j = 1; j <= (2 * i - 1); j++) {
-        out.print("*");
+        out.print("🐱");
     }
 
     out.print("<br>");
@@ -114,7 +114,7 @@ for(int i = 1; i <= cpt; i++) {
 <h2>Exercice 6 : Le demi losange</h2>
 <p>Ecrire le code afin de produire un losange</p>
 <p>Exemple si l'utilisateur saisie le valeur 5</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**</br>&nbsp;&nbsp;&nbsp;&nbsp;***</br>&nbsp;&nbsp;****</br>*****</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐱</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐱🐱</br>&nbsp;&nbsp;&nbsp;&nbsp;🐱🐱🐱</br>&nbsp;&nbsp;🐱🐱🐱🐱</br>🐱🐱🐱🐱🐱</p>
 <h3>Demi-losange</h3>
 
 <%
@@ -126,7 +126,7 @@ for(int i = 1; i <= cpt; i++) {
     }
 
     for(int j = 1; j <= i; j++) {
-        out.print("*");
+        out.print("🐱");
     }
 
     out.print("<br>");
@@ -140,7 +140,7 @@ for(int i = cpt - 1; i >= 1; i--) {
     }
 
     for(int j = 1; j <= i; j++) {
-        out.print("*");
+        out.print("🐱");
     }
 
     out.print("<br>");
