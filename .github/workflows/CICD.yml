@@ -11,7 +11,7 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
     - run: |
-        javac -d WEB-INF/classes WEB-INF/classes/mypackage/Task.java
+        javac -d WEB-INF/classes WEB-INF/classes/mypackage/Task.java WEB-INF/classes/mypackage/TaskServlet.java
         jar cvf julien.war *
     - name: copy file via ssh password
       uses: appleboy/scp-action@master
