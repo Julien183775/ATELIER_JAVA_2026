@@ -3,21 +3,23 @@ package mypackage;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 public class TaskServlet extends HttpServlet {
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        request.setCharacterEncoding("UTF-8");
+
         HttpSession session = request.getSession();
 
-        // Récupération ou création de la liste en session
         ArrayList<Task> taches = (ArrayList<Task>) session.getAttribute("taches");
         if (taches == null) {
             taches = new ArrayList<Task>();
@@ -30,27 +32,35 @@ public class TaskServlet extends HttpServlet {
             String titre = request.getParameter("titre");
             String description = request.getParameter("description");
             String dateStr = request.getParameter("dateEcheance");
-            LocalDate date = LocalDate.parse(dateStr);
-            taches.add(new Task(titre, description, date));
+
+            if (titre != null && !titre.trim().isEmpty()
+                    && description != null && !description.trim().isEmpty()
+                    && dateStr != null && !dateStr.isEmpty()) {
+                LocalDate date = LocalDate.parse(dateStr);
+                taches.add(new Task(titre.trim(), description.trim(), date));
+            }
         }
 
         if ("supprimer".equals(action)) {
             int index = Integer.parseInt(request.getParameter("index"));
-            taches.remove(index);
+            if (index >= 0 && index < taches.size()) {
+                taches.remove(index);
+            }
         }
 
         if ("terminer".equals(action)) {
             int index = Integer.parseInt(request.getParameter("index"));
-            taches.get(index).setTerminee(true);
+            if (index >= 0 && index < taches.size()) {
+                taches.get(index).setTerminee(true);
+            }
         }
 
-        // Redirection vers la JSP d'affichage
-        response.sendRedirect("taches.jsp");
+        response.sendRedirect(request.getContextPath() + "/taches.jsp");
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect("taches.jsp");
+        response.sendRedirect(request.getContextPath() + "/taches.jsp");
     }
 }
