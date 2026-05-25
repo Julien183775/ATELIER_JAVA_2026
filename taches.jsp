@@ -1,37 +1,86 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+<%@page import="mypackage.Task"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.time.LocalDate"%>
 <html>
 <head>
-<title>Taches</title>
+    <title>Gestion des tâches</title>
 </head>
 <body bgcolor=white>
-<h1>Saisir une tache</h1>
-<form action="#" method="post">
-    <label for="inputValeur">Saisir le nom d'une tache : </label>
-    <input type="text" id="inputValeur" name="valeur">
-    <input type="submit" value="Enregistrer">
+<h1>Gestionnaire de tâches</h1>
+
+<%-- Récupération ou création de la liste en session --%>
+<%
+    ArrayList<Task> taches = (ArrayList<Task>) session.getAttribute("taches");
+    if (taches == null) {
+        taches = new ArrayList<Task>();
+        session.setAttribute("taches", taches);
+    }
+%>
+
+<%-- Ajout d'une tâche --%>
+<%
+    String action = request.getParameter("action");
+    if ("ajouter".equals(action)) {
+        String titre = request.getParameter("titre");
+        String description = request.getParameter("description");
+        String dateStr = request.getParameter("dateEcheance");
+        LocalDate date = LocalDate.parse(dateStr);
+        taches.add(new Task(titre, description, date));
+    }
+%>
+
+<%-- Suppression d'une tâche --%>
+<%
+    if ("supprimer".equals(action)) {
+        int index = Integer.parseInt(request.getParameter("index"));
+        taches.remove(index);
+    }
+%>
+
+<%-- Marquer comme terminée --%>
+<%
+    if ("terminer".equals(action)) {
+        int index = Integer.parseInt(request.getParameter("index"));
+        taches.get(index).setTerminee(true);
+    }
+%>
+
+<h2>Ajouter une tâche</h2>
+<form action="taches.jsp" method="post">
+    <input type="hidden" name="action" value="ajouter">
+    <p>Titre : <input type="text" name="titre" required></p>
+    <p>Description : <input type="text" name="description" required></p>
+    <p>Date d'échéance : <input type="date" name="dateEcheance" required></p>
+    <p><input type="submit" value="Ajouter"></p>
 </form>
 
-<%! 
-    class MyClass {
-        String nameTache;
+<h2>Liste des tâches (<%= taches.size() %> tâche(s))</h2>
+<% if (taches.isEmpty()) { %>
+    <p>Aucune tâche pour le moment.</p>
+<% } else { %>
+    <% for (int i = 0; i < taches.size(); i++) {
+           Task t = taches.get(i); %>
+        <p>
+            <strong><%= t.getTitre() %></strong> — <%= t.getDescription() %>
+            | Échéance : <%= t.getDateEcheance() %>
+            | Statut : <%= t.isTerminee() ? "✅ Terminée" : "⏳ En cours" %>
+            <form action="taches.jsp" method="post" style="display:inline">
+                <input type="hidden" name="action" value="supprimer">
+                <input type="hidden" name="index" value="<%= i %>">
+                <input type="submit" value="Supprimer">
+            </form>
+            <% if (!t.isTerminee()) { %>
+            <form action="taches.jsp" method="post" style="display:inline">
+                <input type="hidden" name="action" value="terminer">
+                <input type="hidden" name="index" value="<%= i %>">
+                <input type="submit" value="Marquer terminée">
+            </form>
+            <% } %>
+        </p>
+    <% } %>
+<% } %>
 
-        public MyClass(String name) {
-            nameTache = name;
-        }
-    }
-%>
-
-<%
-    String valeur = request.getParameter("valeur");
-
-    if (valeur != null && !valeur.isEmpty()) {
-        MyClass tache = new MyClass(valeur);
-%>
-        <p>Nom de la tâche : <%= tache.nameTache %></p>
-<%
-    }
-%>
-
+<p><a href="index.html">Retour au sommaire</a></p>
 </body>
 </html>
