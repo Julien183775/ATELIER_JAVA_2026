@@ -1,25 +1,34 @@
 name: Industrialisation continue sur le serveur AWS (Tomcat)
+
 on: push
+
 jobs:
   Deploy:
     name: Deploy
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@master
-    - uses: actions/setup-java@v4
-      with:
-        java-version: '11'
-        distribution: 'temurin'
-    - run: |
-        curl -L https://repo1.maven.org/maven2/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0.jar -o servlet-api.jar
-        javac -cp servlet-api.jar -d WEB-INF/classes WEB-INF/classes/mypackage/Task.java WEB-INF/classes/mypackage/TaskServlet.java
-        jar cvf julien.war *
-    - name: copy file via ssh password
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.HOST_DNS }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.EC2_SSH_KEY }}
-        port: ${{ secrets.DEPLOY_PORT }}
-        source: "julien.war"
-        target: "/opt/tomcat/webapps"
+      - name: Recuperer le projet
+        uses: actions/checkout@v4
+
+      - name: Installer Java 11
+        uses: actions/setup-java@v4
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+
+      - name: Compiler les classes Java et creer le WAR
+        run: |
+          curl -L https://repo1.maven.org/maven2/jakarta/servlet/jakarta.servlet-api/6.0.0/jakarta.servlet-api-6.0.0.jar -o servlet-api.jar
+          javac -cp servlet-api.jar -d WEB-INF/classes WEB-INF/classes/mypackage/Task.java WEB-INF/classes/mypackage/TaskServlet.java
+          jar cvf julien.war index.html *.jsp WEB-INF META-INF images
+
+      - name: Copier le fichier WAR sur le serveur AWS
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST_DNS }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: ${{ secrets.DEPLOY_PORT }}
+          source: "julien.war"
+          target: "/opt/tomcat/webapps"
